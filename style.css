@@ -1,18 +1,91 @@
-.scroll {
+body {
+	margin: 50px 100px;
+}
+
+.carousel {
+	position: relative;
+}
+
+.carousel._inited {
+
+}
+
+.carousel::before,
+.carousel::after {
+	position: absolute;
+	content: "";
+	top: 0;
+	bottom: 0;
+	height: auto;
+	background: #fff;
+	width: 20px;
+	display: block;
+	visibility: hidden;
+	z-index: 1;
+	opacity: 0;
+	transition: ease 0.2s;
+	transition-property: visibility, opacity;
+}
+
+.carousel::before {
+	background: radial-gradient(ellipse at -30% 50%, rgba(0, 0, 0, 0.3), rgba(97, 97, 97, 0) 72%);
+	left: 0;
+}
+
+.carousel::after {
+	background: radial-gradient(ellipse at 70% 50%, rgba(0, 0, 0, 0.3), rgba(97, 97, 97, 0) 72%);
+	right: 0;
+}
+
+.carousel._inited._next-visible::after,
+.carousel._inited._prev-visible::before {
+	opacity: 1;
+	visibility: visible;
+}
+
+.carousel__ctrl {
+	position: absolute;
+	top: 50%;
+	margin-top: -20px;
+	width: 40px;
+	height: 40px;
+	z-index: 2;
+	text-align: center;
+	border-radius: 100%;
+	background-color: #fff;
+	border: none;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+}
+
+.carousel__ctrl._prev {
+	left: -20px;
+}
+
+.carousel__ctrl._next {
+	right: -20px;
+}
+
+.carousel__track {
 	display: flex;
 	overflow: auto;
-	/*scroll-snap-type: x mandatory;*/
-	/*scroll-padding*/
-	/*scroll-snap-points-x: repeat(38%);*/
+	scroll-snap-type: x proximity;
+	-webkit-overflow-scrolling: touch;
+	scroll-behavior: smooth;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.carousel__track::-webkit-scrollbar {
+	display: none;
 }
 
 .box {
-	/*scroll-snap-align: start;*/
+	scroll-snap-align: center;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	min-width: 38%;
-	max-width: 38%;
+	min-width: 33%;
+	max-width: 33%;
 	min-height: 400px;
 }
 

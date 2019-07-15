@@ -1,6 +1,6 @@
 class ScrollList {
 	constructor(item) {
-		this.container = item;
+		this.carousel = item;
 		this.addListeners();
 	}
 
@@ -19,35 +19,33 @@ class ScrollList {
 	// if last item should scroll to last
 
 	getLeftItemOffset() {
-		const scroll = this.container.scrollLeft;
+		const scroll = this.carousel.scrollLeft;
 		let closestStart;
 		let closestEnd;
 		let i = 0;
-		while (this.container.children[i].offsetLeft <= scroll) {
-			closestStart = this.container.children[i].offsetLeft;
-			closestEnd = closestStart + this.container.children[i].clientWidth;
+		while (this.carousel.children[i].offsetLeft <= scroll) {
+			closestStart = this.carousel.children[i].offsetLeft;
+			closestEnd = closestStart + this.carousel.children[i].clientWidth;
 			i++;
 		}
 		console.log(closestStart);
-		this.container.scrollTo({top: 0, left: this.getClosestSide(closestStart, closestEnd, scroll), behavior: 'smooth'})
+		this.carousel.scrollTo({top: 0, left: this.getClosestSide(closestStart, closestEnd, scroll), behavior: 'smooth'})
 	}
 
 	watchScroll() {
 		window.clearTimeout(this.isScrolling);
-		this.isScrolling = setTimeout(this.getLeftItemOffset.bind(this), 100);
+		this.isScrolling = setTimeout(this.getLeftItemOffset.bind(this), 120);
 	}
 
 	addListeners() {
-		this.container.addEventListener('scroll', this.watchScroll.bind(this));
-	}
+		this.watchScroll = this.watchScroll.bind(this);
 
-	removeListeners() {
-		this.container.removeEventListener('scroll', this.watchScroll);
+		this.carousel.addEventListener('scroll', this.watchScroll);
 	}
 
 	destroy() {
-		this.removeListeners();
+		this.carousel.removeEventListener('scroll', this.watchScroll);
 	}
 }
 
-document.querySelectorAll('.scroll').forEach(item => new ScrollList(item));
+//document.querySelectorAll('.scroll').forEach(item => new ScrollList(item));

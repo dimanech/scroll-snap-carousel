@@ -1,0 +1,21 @@
+{
+  "name": "aria-focus-highlighter",
+  "version": "1.0.1",
+  "description": "Hide focus decoration only for regular users",
+  "main": "FocusHighlighter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:dimanech/aria-focus-highlighter.git"
+  },
+  "author": "Nechepurenko D.",
+  "devDependencies": {
+    "eslint": "^6.0.1",
+    "stylelint": "^10.1.0",
+    "stylelint-order": "^3.0.0",
+    "stylelint-scss": "^3.8.0"
+  }
+}

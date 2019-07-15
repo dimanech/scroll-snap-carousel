@@ -1,0 +1,24 @@
+# Autodetect text files
+* text=auto
+
+# Force all text file types to have unix line endings
+*.* text eol=lf
+
+# Force the following file types to be handled as binaries
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.png binary
+*.ttf binary
+*.eof binary
+*.eot binary
+*.swf binary
+*.mov binary
+*.mp4 binary
+*.mp3 binary
+*.ogg binary
+*.flv binary
+*.wav binary
+*.jar binary
+*.woff binary
+*.woff2 binary

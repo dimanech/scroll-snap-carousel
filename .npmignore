@@ -1,0 +1,16 @@
+.DS_Store
+._*
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+.idea
+.vscode
+
+.githooks
+.ssl
+atlas
+assets/src
+.nyc_output
+coverage
+docs
+test
