@@ -71,8 +71,12 @@ body {
 	scroll-snap-type: x proximity;
 	-webkit-overflow-scrolling: touch;
 	scroll-behavior: smooth;
-	-ms-overflow-style: none;
-	scrollbar-width: none;
+	-ms-overflow-style: none; /* IE */
+	scrollbar-width: none; /* FF */
+	overflow-scrolling: touch;
+	overflow-behavior: contain;
+	-ms-scroll-chaining: none;
+	touch-action: pan-y;
 }
 
 .carousel__track::-webkit-scrollbar {

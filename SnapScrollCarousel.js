@@ -26,7 +26,7 @@ class ScrollCarousel {
 
 	onScroll() {
 		const totalScrollWidth = this.carouselTrack.scrollLeft + this.itemsContainerWidth;
-		this.scrollStart = this.carouselTrack.scrollLeft === 0;
+		this.scrollStart = this.carouselTrack.scrollLeft < 0;
 		this.scrollEnd = totalScrollWidth + this.scrollEndSensitivity > this.carouselTrack.scrollWidth;
 
 		this.updateCarouselState();
