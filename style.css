@@ -67,7 +67,8 @@ body {
 
 .carousel__track {
 	display: flex;
-	overflow: auto;
+	overflow: hidden;
+	overflow-x: scroll; /* should be scroll for iOS */
 	scroll-snap-type: x proximity;
 	-webkit-overflow-scrolling: touch;
 	scroll-behavior: smooth;

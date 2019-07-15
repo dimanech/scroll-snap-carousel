@@ -26,8 +26,8 @@ class ScrollCarousel {
 
 	onScroll() {
 		const totalScrollWidth = this.carouselTrack.scrollLeft + this.itemsContainerWidth;
-		this.scrollStart = this.carouselTrack.scrollLeft < 0;
-		this.scrollEnd = totalScrollWidth + this.scrollEndSensitivity > this.carouselTrack.scrollWidth;
+		this.scrollStart = this.carouselTrack.scrollLeft <= 0;
+		this.scrollEnd = totalScrollWidth + this.scrollEndSensitivity >= this.carouselTrack.scrollWidth;
 
 		this.updateCarouselState();
 	}
@@ -48,6 +48,7 @@ class ScrollCarousel {
 
 	next() {
 		// scrollIntoView
+		// Safari old + Edge not smooth scroll
 		if (typeof this.carouselTrack.scrollTo === 'function') {
 			this.carouselTrack.scrollTo({
 				top: 0,
@@ -72,4 +73,4 @@ class ScrollCarousel {
 	}
 }
 
-document.querySelectorAll('.carousel').forEach(carousel => new ScrollCarousel(carousel).init());
+document.querySelectorAll('[data-carousel]').forEach(carousel => new ScrollCarousel(carousel).init());

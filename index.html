@@ -7,13 +7,19 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<div class="carousel">
+	<div class="carousel" data-carousel>
 		<button
 			class="carousel__ctrl _prev"
 			data-prev-button
 			tabindex="-1"
 			aria-hidden="true"
-		> < </button>
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+				<g fill="none" stroke="#000" stroke-width="2" style="transform: rotate(-180deg); transform-origin: center">
+					<path d="M1 9h14M9 2l7 7-7 7"></path>
+				</g>
+			</svg>
+		</button>
 		<div class="carousel__track" data-carousel-track>
 			<div class="box" tabindex="0">1</div>
 			<div class="box" tabindex="0">2</div>
@@ -31,20 +37,26 @@
 			data-next-button
 			tabindex="-1"
 			aria-hidden="true"
-		> > </button>
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+				<g fill="none" stroke="#000" stroke-width="2">
+					<path d="M1 9h14M9 2l7 7-7 7"></path>
+				</g>
+			</svg>
+		</button>
 	</div>
 	
 	<br>
 	<br>
 	<br>
 	
-	<div class="carousel">
-		<button class="carousel__ctrl _prev" data-prev-button tabindex="-1" aria-hidden="true"> <</button>
-		<div class="carousel__track">
+	<div class="carousel" data-carousel>
+		<button class="carousel__ctrl _prev" data-prev-button tabindex="-1" aria-hidden="true">Prev</button>
+		<div class="carousel__track" data-carousel-track>
 			<div class="box" tabindex="0">1</div>
 			<div class="box" tabindex="0">2</div>
 		</div>
-		<button class="carousel__ctrl _next" data-next-button tabindex="-1" aria-hidden="true"> ></button>
+		<button class="carousel__ctrl _next" data-next-button tabindex="-1" aria-hidden="true">Next</button>
 	</div>
 	<script src="SnapScrollCarousel.js"></script>
 </body>
