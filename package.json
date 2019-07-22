@@ -1,8 +1,8 @@
 {
-  "name": "aria-focus-highlighter",
+  "name": "snap-scroll-carousel",
   "version": "1.0.1",
-  "description": "Hide focus decoration only for regular users",
-  "main": "FocusHighlighter.js",
+  "description": "Scroll snap carousel",
+  "main": "SnapScrollCarousel.js.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,9 +12,6 @@
     "url": "git@github.com:dimanech/aria-focus-highlighter.git"
   },
   "author": "Nechepurenko D.",
-  "dependencies": {
-    "smoothscroll-polyfill": "0.4.4"
-  },
   "devDependencies": {
     "eslint": "^6.0.1",
     "stylelint": "^10.1.0",

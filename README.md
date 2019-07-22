@@ -31,6 +31,15 @@ If no JS available it would be just native scroll.
 If scroll snap CSS API available it would be snapped to declared values.
 If JS and snap scroll available than user will have Buttons and pagination functionality improvements over regular scroll.
 
+With polyfill tested:
+
+* FF (68.0), Chrome (75.0.3770.142) Linux
+* FF (68.0), Chrome (75.0.3770.142) MacOS
+
+Safari 12.1.1 not work smooth scroll (could be polyfilled)
+Edge not work smooth scroll
+11 not work smooth scroll
+
 Snap scroll support https://caniuse.com/#feat=css-snappoints
 
 ## License
