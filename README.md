@@ -1,8 +1,9 @@
 # Snap scroll carousel
 
 It has been long ago that I was start thinking that classical carousel is absolutely redundant thing.
-It could be fully replaced by native scroll functionality - that would contribute to grater UX than this, old stuff button navigating only carousels.
-You probably know that scroll is very complex function that very hard to implement without access to native OS API. 
+It could be fully replaced by native scroll functionality - that would contribute to grater UX than, this, old stuff button-navigating-clicking, not-useful-dragging things.
+
+You probably know that scroll is very complex functionality that very hard to implement without access to native OS API. 
 That's why native scroll is more comfortable for the user (on modern desktop and all mobile) than any button-driven-functionality.
 
 ## Snap scroll
