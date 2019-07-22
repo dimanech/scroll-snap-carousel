@@ -6,25 +6,44 @@ body {
 	position: relative;
 }
 
-.carousel._inited {
+.carousel._inited {}
 
+.carousel__track {
+	display: flex;
+	overflow-behavior: contain;
+	overflow-scrolling: touch;
+	overflow: hidden;
+	overflow-x: auto;
+	scroll-behavior: smooth;
+	scroll-snap-type: x proximity;
+	scrollbar-width: none; /* FF */
+	touch-action: pan-y;
+	-ms-overflow-style: none; /* IE */
+	-ms-scroll-chaining: none;
+	-webkit-overflow-scrolling: touch;
 }
+
+.carousel__track::-webkit-scrollbar {
+	display: none;
+}
+
+/* Buttons */
 
 .carousel::before,
 .carousel::after {
-	position: absolute;
-	content: "";
-	top: 0;
-	bottom: 0;
-	height: auto;
 	background: #fff;
-	width: 20px;
+	bottom: 0;
+	content: "";
 	display: block;
-	visibility: hidden;
-	z-index: 1;
+	height: auto;
 	opacity: 0;
-	transition: ease 0.2s;
+	position: absolute;
+	top: 0;
 	transition-property: visibility, opacity;
+	transition: ease 0.2s;
+	visibility: hidden;
+	width: 20px;
+	z-index: 1;
 }
 
 .carousel::before {
@@ -44,17 +63,21 @@ body {
 }
 
 .carousel__ctrl {
-	position: absolute;
-	top: 50%;
-	margin-top: -20px;
-	width: 40px;
-	height: 40px;
-	z-index: 2;
-	text-align: center;
-	border-radius: 100%;
 	background-color: #fff;
+	border-radius: 100%;
 	border: none;
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+	height: 40px;
+	margin-top: -20px;
+	position: absolute;
+	text-align: center;
+	top: 50%;
+	width: 40px;
+	z-index: 2;
+}
+
+.carousel__ctrl[disabled] {
+	color: grey;
 }
 
 .carousel__ctrl._prev {
@@ -65,33 +88,56 @@ body {
 	right: -20px;
 }
 
-.carousel__track {
-	display: flex;
-	overflow: hidden;
-	overflow-x: scroll; /* should be scroll for iOS */
-	scroll-snap-type: x proximity;
-	-webkit-overflow-scrolling: touch;
-	scroll-behavior: smooth;
-	-ms-overflow-style: none; /* IE */
-	scrollbar-width: none; /* FF */
-	overflow-scrolling: touch;
-	overflow-behavior: contain;
-	-ms-scroll-chaining: none;
-	touch-action: pan-y;
+/* pagination */
+
+.pagination {
+	margin: 5px;
+	text-align: center;
 }
 
-.carousel__track::-webkit-scrollbar {
-	display: none;
+.page {
+	background-color: lightgrey;
+	border-radius: 10px;
+	border: none;
+	cursor: pointer;
+	height: 6px;
+	margin: 3px;
+	padding: 0;
+	transition: background-color ease 0.4s;
+	width: 6px;
 }
+
+.page._current {
+	background-color: black;
+}
+
+/* content and variations */
 
 .box {
-	scroll-snap-align: center;
+	align-items: center;
 	display: flex;
 	justify-content: center;
-	align-items: center;
-	min-width: 33%;
-	max-width: 33%;
 	min-height: 400px;
+	scroll-snap-align: center;
+}
+
+.box._third {
+	max-width: 33%;
+	min-width: 33%;
+}
+
+.box._fours {
+	max-width: 25%;
+	min-width: 25%;
+}
+
+.box._half-next {
+	max-width: 28.57%;
+	min-width: 28.57%;
+}
+
+.box:nth-child(1) {
+	background: #eee;
 }
 
 .box:nth-child(2) {

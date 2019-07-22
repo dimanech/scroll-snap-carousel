@@ -12,6 +12,9 @@
     "url": "git@github.com:dimanech/aria-focus-highlighter.git"
   },
   "author": "Nechepurenko D.",
+  "dependencies": {
+    "smoothscroll-polyfill": "0.4.4"
+  },
   "devDependencies": {
     "eslint": "^6.0.1",
     "stylelint": "^10.1.0",
