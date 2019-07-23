@@ -27,6 +27,10 @@ body {
 	display: none;
 }
 
+.carousel._slider .carousel__track {
+	scroll-snap-type: x mandatory;
+}
+
 /* Buttons */
 
 .carousel::before,
