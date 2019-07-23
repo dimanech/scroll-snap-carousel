@@ -12,6 +12,7 @@ body {
 	display: flex;
 	overflow-behavior: contain;
 	overflow-scrolling: touch;
+	overscroll-behavior-x: contain;
 	overflow: hidden;
 	overflow-x: auto;
 	scroll-behavior: smooth;
