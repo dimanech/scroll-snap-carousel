@@ -1,5 +1,3 @@
-// TODO scrollHelper - scrollToPoint, scrollToNode, scrollToPage
-
 export default class SnapScrollCarousel {
 	constructor(domNode) {
 		this.carousel = domNode;
