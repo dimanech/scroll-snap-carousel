@@ -4,12 +4,12 @@
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Snap scroll</title>
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 	<h1>Snap scroll carousel</h1>
 	<h2>3 items</h2>
-	<div class="carousel" data-carousel>
+	<div class="carousel" data-carousel data-pagination>
 		<button
 			class="carousel__ctrl _prev"
 			data-prev-button
@@ -92,9 +92,8 @@
 		<button class="carousel__ctrl _next" data-next-button tabindex="-1" aria-hidden="true">Next</button>
 	</div>
 	
-	
 	<h2>Different width</h2>
-	<div class="carousel _half-of-next" data-carousel>
+	<div class="carousel" data-carousel>
 		<button class="carousel__ctrl _prev" data-prev-button tabindex="-1" aria-hidden="true">Prev</button>
 		<div class="carousel__track" data-carousel-track>
 			<div class="box _third" tabindex="0">1</div>
@@ -110,7 +109,49 @@
 		<button class="carousel__ctrl _next" data-next-button tabindex="-1" aria-hidden="true">Next</button>
 	</div>
 	
-	<script src="./node_modules/smoothscroll-polyfill/dist/smoothscroll.js"></script>
-	<script src="SnapScrollCarousel.js"></script>
+	<h2>Slider like</h2>
+	<div class="carousel" data-carousel>
+		<button class="carousel__ctrl _prev" data-prev-button tabindex="-1" aria-hidden="true">Prev</button>
+		<div class="carousel__track" data-carousel-track>
+			<div class="box _single" tabindex="0">1</div>
+			<div class="box _single" tabindex="0">2</div>
+			<div class="box _single" tabindex="0">3</div>
+			<div class="box _single" tabindex="0">4</div>
+			<div class="box _single" tabindex="0">5</div>
+			<div class="box _single" tabindex="0">6</div>
+		</div>
+		<button class="carousel__ctrl _next" data-next-button tabindex="-1" aria-hidden="true">Next</button>
+	</div>
+	
+	<h2>Scroll by 3 or any other items</h2>
+	<div class="carousel _half-of-next" data-carousel>
+		<button class="carousel__ctrl _prev" data-prev-button tabindex="-1" aria-hidden="true">Prev</button>
+		<div class="carousel__track" data-carousel-track>
+			<div class="box _single">
+				<div class="box _fours" tabindex="0">1</div>
+				<div class="box _fours" tabindex="0">2</div>
+				<div class="box _fours" tabindex="0">3</div>
+				<div class="box _fours" tabindex="0">4</div>
+			</div>
+			<div class="box _single">
+				<div class="box _third" tabindex="0">1</div>
+				<div class="box _third" tabindex="0">2</div>
+				<div class="box _third" tabindex="0">2</div>
+			</div>
+			<div class="box _single">
+				<div class="box _half" tabindex="0">1</div>
+				<div class="box _half" tabindex="0">2</div>
+			</div>
+			<div class="box _single" tabindex="0">
+				4
+			</div>
+		</div>
+		<button class="carousel__ctrl _next" data-next-button tabindex="-1" aria-hidden="true">Next</button>
+	</div>
+	
+	<script type="module">
+		import SnapScrollCarousel from './SnapScrollCarousel.js';
+		document.querySelectorAll('[data-carousel]').forEach(carousel => new SnapScrollCarousel(carousel).init());
+	</script>
 </body>
 </html>

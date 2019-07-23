@@ -1,9 +1,10 @@
-class ScrollCarousel {
+export default class SnapScrollCarousel {
 	constructor(domNode) {
 		this.carousel = domNode;
 		this.carouselTrack = this.carousel.querySelector('[data-carousel-track]');
 		this.prevButton = this.carousel.querySelector('[data-prev-button]');
 		this.nextButton = this.carousel.querySelector('[data-next-button]');
+
 		this.currentPage = 0;
 
 		this.itemsContainerWidth = this.carouselTrack.offsetWidth;
@@ -14,8 +15,7 @@ class ScrollCarousel {
 		this.addEventListeners();
 		this.updateCarouselState();
 		this.carousel.classList.add('_inited');
-		this.createPagination();
-		this.setActivePagination();
+		this.setupPagination();
 	}
 
 	addEventListeners() {
@@ -33,6 +33,10 @@ class ScrollCarousel {
 		this.scrollStart = this.carouselTrack.scrollLeft <= 0;
 		this.scrollEnd = totalScrollWidth + this.scrollEndSensitivity >= this.carouselTrack.scrollWidth;
 
+		this.scrollHandlers();
+	}
+
+	scrollHandlers() {
 		this.updateCarouselState();
 		this.setActivePagination();
 	}
@@ -43,8 +47,12 @@ class ScrollCarousel {
 			this.nextButton.setAttribute('disabled', 'true');
 			this.carousel.classList.remove('_prev-visible');
 			this.carousel.classList.remove('_next-visible');
+			this.carousel.classList.add('_no-scroll');
+
 			return;
 		}
+
+		this.carousel.classList.remove('_no-scroll');
 
 		if (this.scrollStart) {
 			this.carousel.classList.remove('_prev-visible');
@@ -84,7 +92,21 @@ class ScrollCarousel {
 		}
 	}
 
-	createPagination() {
+	setupPagination() {
+		const paginationOption = this.carousel.getAttribute('data-pagination');
+		if (paginationOption === null) {
+			return;
+		}
+		if (paginationOption === '') {
+			this.createPaginationElements();
+		} else {
+			this.pagination = document.getElementById(this.pagination);
+		}
+		this.pagination.onclick = this.handlePaginationClick.bind(this);
+		this.setActivePagination();
+	}
+
+	createPaginationElements() {
 		const fullScrollCount = Math.round(this.carouselTrack.scrollWidth / this.carousel.clientWidth);
 		this.pagination = document.createElement('div');
 		this.pagination.className = 'pagination';
@@ -98,17 +120,19 @@ class ScrollCarousel {
 		}
 
 		this.carousel.appendChild(this.pagination);
-		this.pagination.onclick = this.handlePageClick.bind(this);
 	}
 
 	setActivePagination() {
+		if (!this.pagination) {
+			return;
+		}
 		const currentPage = Math.round(this.carouselTrack.scrollLeft / this.carousel.clientWidth);
 		this.pagination.childNodes[this.currentPage].classList.remove('_current');
 		this.pagination.childNodes[currentPage].classList.add('_current');
 		this.currentPage = currentPage;
 	}
 
-	handlePageClick(event) {
+	handlePaginationClick(event) {
 		event.preventDefault();
 		const eventTarget = event.target;
 		let pageIndex = eventTarget.getAttribute('data-page');
@@ -125,5 +149,3 @@ class ScrollCarousel {
 		this.pagination.delete();
 	}
 }
-
-document.querySelectorAll('[data-carousel]').forEach(carousel => new ScrollCarousel(carousel).init());

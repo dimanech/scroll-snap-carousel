@@ -121,6 +121,11 @@ body {
 	scroll-snap-align: center;
 }
 
+.box._single {
+	max-width: 100%;
+	min-width: 100%;
+}
+
 .box._third {
 	max-width: 33%;
 	min-width: 33%;
@@ -129,6 +134,11 @@ body {
 .box._fours {
 	max-width: 25%;
 	min-width: 25%;
+}
+
+.box._half {
+	max-width: 50%;
+	min-width: 50%;
 }
 
 .box._half-next {
