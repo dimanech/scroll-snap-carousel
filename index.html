@@ -128,19 +128,19 @@
 		<button class="carousel__ctrl _prev" data-prev-button tabindex="-1" aria-hidden="true">Prev</button>
 		<div class="carousel__track" data-carousel-track>
 			<div class="box _single">
-				<div class="box _fours" tabindex="0">1</div>
-				<div class="box _fours" tabindex="0">2</div>
-				<div class="box _fours" tabindex="0">3</div>
-				<div class="box _fours" tabindex="0">4</div>
+				<div class="box _fours _no-snap" tabindex="0">1</div>
+				<div class="box _fours _no-snap" tabindex="0">2</div>
+				<div class="box _fours _no-snap" tabindex="0">3</div>
+				<div class="box _fours _no-snap" tabindex="0">4</div>
 			</div>
 			<div class="box _single">
-				<div class="box _third" tabindex="0">1</div>
-				<div class="box _third" tabindex="0">2</div>
-				<div class="box _third" tabindex="0">2</div>
+				<div class="box _third _no-snap" tabindex="0">1</div>
+				<div class="box _third _no-snap" tabindex="0">2</div>
+				<div class="box _third _no-snap" tabindex="0">2</div>
 			</div>
 			<div class="box _single">
-				<div class="box _half" tabindex="0">1</div>
-				<div class="box _half" tabindex="0">2</div>
+				<div class="box _half _no-snap" tabindex="0">1</div>
+				<div class="box _half _no-snap" tabindex="0">2</div>
 			</div>
 			<div class="box _single" tabindex="0">
 				4
@@ -148,6 +148,78 @@
 		</div>
 		<button class="carousel__ctrl _next" data-next-button tabindex="-1" aria-hidden="true">Next</button>
 	</div>
+	
+	<h2>Vertical carousel + another carousel as thumbs</h2>
+	<div class="gallery">
+		<div class="scroll" data-carousel="vertical">
+			<button data-prev-button style="display: none">Prev</button>
+			<button data-next-button style="display: none">Next</button>
+			<div class="scroll__track" data-carousel-track id="gallery-thumbs">
+				<div class="thumb" data-page="0">1</div>
+				<div class="thumb" data-page="1">2</div>
+				<div class="thumb" data-page="2">3</div>
+				<div class="thumb" data-page="3">4</div>
+				<div class="thumb" data-page="4">5</div>
+				<div class="thumb" data-page="5">6</div>
+				<div class="thumb" data-page="6">7</div>
+				<div class="thumb" data-page="7">8</div>
+				<div class="thumb" data-page="8">9</div>
+				<div class="thumb" data-page="9">10</div>
+				<div class="thumb" data-page="10">11</div>
+				<div class="thumb" data-page="11">12</div>
+			</div>
+		</div>
+		<div class="carousel _slider" data-carousel data-pagination="gallery-thumbs">
+			<button class="carousel__ctrl _prev" data-prev-button tabindex="-1" aria-hidden="true">Prev</button>
+			<div class="carousel__track" data-carousel-track>
+				<div class="box _single" tabindex="0">1</div>
+				<div class="box _single" tabindex="0">2</div>
+				<div class="box _single" tabindex="0">3</div>
+				<div class="box _single" tabindex="0">4</div>
+				<div class="box _single" tabindex="0">5</div>
+				<div class="box _single" tabindex="0">6</div>
+				<div class="box _single" tabindex="0">7</div>
+				<div class="box _single" tabindex="0">8</div>
+				<div class="box _single" tabindex="0">9</div>
+				<div class="box _single" tabindex="0">10</div>
+				<div class="box _single" tabindex="0">11</div>
+				<div class="box _single" tabindex="0">12</div>
+			</div>
+			<button class="carousel__ctrl _next" data-next-button tabindex="-1" aria-hidden="true">Next</button>
+		</div>
+	</div>
+	
+	
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	
 	
 	<script type="module">
 		import SnapScrollCarousel from './SnapScrollCarousel.js';

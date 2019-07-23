@@ -18,7 +18,7 @@ body {
 	scroll-behavior: smooth;
 	scroll-snap-type: x proximity;
 	scrollbar-width: none; /* FF */
-	touch-action: pan-y;
+	touch-action: pan-x;
 	-ms-overflow-style: none; /* IE */
 	-ms-scroll-chaining: none;
 	-webkit-overflow-scrolling: touch;
@@ -126,6 +126,10 @@ body {
 	scroll-snap-align: center;
 }
 
+.box._no-snap {
+	scroll-snap-align: none;
+}
+
 .box._single {
 	max-width: 100%;
 	min-width: 100%;
@@ -146,7 +150,7 @@ body {
 	min-width: 50%;
 }
 
-.box._half-next {
+.box._half-next { /* classical visual hint about upon scroll */
 	max-width: 28.57%;
 	min-width: 28.57%;
 }
@@ -173,4 +177,98 @@ body {
 
 .box:nth-child(6) {
 	background: #a13647;
+}
+
+/* Vertical carousel */
+
+.scroll {
+	position: relative;
+	padding: 1px 10px;
+}
+
+.scroll::before,
+.scroll::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	width: 0;
+	height: 0.6px;
+	background-color: #666;
+	opacity: 0;
+	transition: ease 0.3s;
+	transition-property: width, left, opacity;
+	z-index: 1;
+}
+
+.scroll._inited._prev-visible::before,
+.scroll._inited._next-visible::after {
+	width: 100%;
+	opacity: 1;
+	left: 0;
+}
+
+.scroll__track {
+	display: flex;
+	flex-direction: column;
+	height: 400px;
+	overflow-behavior: contain;
+	overflow-scrolling: touch;
+	overscroll-behavior-y: contain;
+	overflow: hidden;
+	overflow-y: auto;
+	scroll-behavior: smooth;
+	scroll-snap-type: y proximity;
+	scrollbar-width: none; /* FF */
+	touch-action: pan-y;
+	-ms-overflow-style: none; /* IE */
+	-ms-scroll-chaining: none;
+	-webkit-overflow-scrolling: touch;
+}
+
+.scroll__track::-webkit-scrollbar {
+	display: none;
+}
+
+.thumb {
+	background: #eee;
+	cursor: pointer;
+	display: block;
+	height: 40px;
+	line-height: 40px;
+	margin-bottom: 5px;
+	position: relative;
+	scroll-snap-align: center;
+	text-align: center;
+	width: 40px;
+}
+
+.thumb::after {
+	box-shadow: inset 0 0 0 0 lightblue;
+	bottom: 0;
+	content: "";
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	transition: box-shadow ease 0.3s;
+}
+
+.thumb._current::after {
+	box-shadow: inset 0 0 0 3px lightblue;
+}
+
+/* Gallery */
+
+.gallery {
+	display: flex;
+}
+
+.gallery .scroll {
+	flex-basis: 40px;
+	margin-right: 20px;
+}
+
+.gallery .carousel {
+	width: 100%;
+	max-width: 400px;
 }

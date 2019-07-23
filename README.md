@@ -28,10 +28,10 @@ So as the result this progressive enhancement scroll and CSS based carousel.
 
 * Progressive enhancement, it work even before JS is loaded
 * Responsive
-* LTR and RTL
+* LTR and RTL directions support
 * Plays well with dynamic content
-* AAA ARIA accessibility
-* Could be controlled from keyboard, mouse, touch etc.
+* AAA ARIA accessibility (focus of elements and visibility)
+* Could be controlled from keyboard (arrows, home, end, pgDn, pgUp etc.), mouse, touch etc.
 * Scroll up to all elements, not just 1 at the time
 
 But! It could not handle good infinite scroll...
@@ -40,7 +40,7 @@ But! It could not handle good infinite scroll...
 
 I do not know why it marquee-like pattern even needed 
 (if you have good navigation, but not browse by 1 item per click), especially for carousels, 
-that mostly represents large content, that not permanent visible for the user, and should have feels of boundaries.
+that mostly represents large content, that not permanent visible for the user, and should have feels of extremes of the list.
 
 For that type of content more important good browsing UX than "auto scrolling".
 
