@@ -31,7 +31,7 @@ So as the result this progressive enhancement scroll and CSS based carousel.
 * LTR and RTL directions support
 * Plays well with dynamic content
 * AAA ARIA accessibility (focus of elements and visibility)
-* Could be controlled from keyboard (arrows, home, end, pgDn, pgUp etc.), mouse, touch etc.
+* Could be controlled from keyboard (tab, arrows), mouse, touch etc.
 * Scroll up to all elements, not just 1 at the time
 
 But! It could not handle good infinite scroll...

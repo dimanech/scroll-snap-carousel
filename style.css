@@ -77,6 +77,7 @@ body {
 	position: absolute;
 	text-align: center;
 	top: 50%;
+	user-select: none;
 	width: 40px;
 	z-index: 2;
 }
