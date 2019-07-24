@@ -28,7 +28,7 @@ body {
 	display: none;
 }
 
-.carousel._slider .carousel__track {
+.carousel._mandatory .carousel__track {
 	scroll-snap-type: x mandatory;
 }
 
