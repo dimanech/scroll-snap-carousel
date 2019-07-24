@@ -18,7 +18,7 @@ export default class SnapScrollCarousel {
 		this.onScroll();
 		this.updateCarouselState();
 		this.carousel.classList.add('_inited');
-		this.setupPagination();
+		this.initPagination();
 	}
 
 	addEventListeners() {
@@ -27,6 +27,7 @@ export default class SnapScrollCarousel {
 		this.next = this.next.bind(this);
 
 		this.carouselTrack.addEventListener('scroll', this.onScroll);
+		this.carouselTrack.addEventListener('touchstart', this.onScroll);
 		this.prevButton.addEventListener('click', this.prev);
 		this.nextButton.addEventListener('click', this.next);
 	}
@@ -42,7 +43,7 @@ export default class SnapScrollCarousel {
 			this.scrollEnd = totalScrollHeight + this.scrollEndSensitivity >= this.carouselTrack.scrollHeight;
 		}
 
-		this.scrollHandlers();
+		window.requestAnimationFrame(this.scrollHandlers.bind(this));
 	}
 
 	scrollHandlers() {
@@ -93,25 +94,34 @@ export default class SnapScrollCarousel {
 		}
 	}
 
-	scrollToPoint(top, left) {
+	scrollToPoint(top, left, node) {
+		let element = node || this.carouselTrack;
 		// Safari old + Edge do not have smooth scrolling
 		// please use polyfill or leave it as is
-		if (typeof this.carouselTrack.scrollTo === 'function') {
-			this.carouselTrack.scrollTo({
+		if (typeof element.scrollTo === 'function') {
+			element.scrollTo({
 				top: top,
 				left: left,
 				behavior: 'smooth'
 			});
 		} else {
 			if (this.carouselDirection === 'horizontal') {
-				this.carouselTrack.scrollLeft = left;
+				if (window.jQuery !== undefined) {
+					$(element).animate({ scrollLeft: left}, 300);
+				} else {
+					element.scrollLeft = left;
+				}
 			} else {
-				this.carouselTrack.scrollTop = top;
+				if (window.jQuery !== undefined) {
+					$(element).animate({ scrollTop: top }, 300);
+				} else {
+					element.scrollTop = top;
+				}
 			}
 		}
 	}
 
-	setupPagination() {
+	initPagination() {
 		const paginationOption = this.carousel.getAttribute('data-pagination');
 		if (paginationOption === null) {
 			return;
@@ -126,7 +136,7 @@ export default class SnapScrollCarousel {
 	}
 
 	createPaginationElements() {
-		const fullScrollCount = Math.round(this.carouselTrack.scrollWidth / this.carousel.clientWidth);
+		const fullScrollCount = Math.ceil(this.carouselTrack.scrollWidth / this.carousel.clientWidth);
 		if (this.pagination) {
 			this.pagination.innerHTML = '';
 		}
@@ -145,11 +155,11 @@ export default class SnapScrollCarousel {
 	}
 
 	setActivePagination() {
-		const currentPageIndex = Math.round(this.carouselTrack.scrollLeft / this.carousel.clientWidth);
+		const currentPageIndex = Math.ceil(this.carouselTrack.scrollLeft / this.carousel.clientWidth);
 		this.pagination.children[this.currentPage].classList.remove('_current');
 		const currentPage = this.pagination.children[currentPageIndex];
 		if (!currentPage) {
-			this.setupPagination();
+			this.initPagination();
 		}
 		currentPage.classList.add('_current');
 		this.currentPage = currentPageIndex;
@@ -157,14 +167,9 @@ export default class SnapScrollCarousel {
 
 	scrollToActivePagination() {
 		const currentPage = this.pagination.children[this.currentPage];
-		if (typeof currentPage.scrollIntoViewIfNeeded === 'function') {
-			currentPage.scrollIntoViewIfNeeded();
-		} else {
-			currentPage.scrollIntoView({
-				behavior: "smooth",
-				block: "nearest",
-				inline: "nearest"
-			});
+		if (currentPage.offsetTop > this.pagination.clientHeight ||
+			currentPage.getBoundingClientRect().top < 0) {
+			this.scrollToPoint(currentPage.offsetTop, 0, this.pagination);
 		}
 	}
 
@@ -184,6 +189,7 @@ export default class SnapScrollCarousel {
 
 	destroy() {
 		this.carouselTrack.removeEventListener('scroll', this.onScroll);
+		this.carouselTrack.removeEventListener('touchstart', this.onScroll);
 		this.prevButton.removeEventListener('click', this.prev);
 		this.nextButton.removeEventListener('click', this.next);
 		this.pagination.delete();
