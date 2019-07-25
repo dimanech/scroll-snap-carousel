@@ -141,8 +141,8 @@ body {
 }
 
 .box._third {
-	max-width: 33%;
-	min-width: 33%;
+	max-width: 33.333333%;
+	min-width: 33.333333%;
 }
 
 .box._fours {
