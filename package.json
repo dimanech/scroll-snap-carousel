@@ -2,20 +2,20 @@
   "name": "snap-scroll-carousel",
   "version": "1.0.1",
   "description": "Scroll snap carousel",
-  "main": "SnapScrollCarousel.js.js",
+  "main": "SnapScrollCarousel.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:dimanech/aria-focus-highlighter.git"
+    "url": "git@github.com:dimanech/scroll-snap-carousel.git"
   },
   "author": "Nechepurenko D.",
   "devDependencies": {
-    "eslint": "^6.0.1",
+    "eslint": "^6.1.0",
     "stylelint": "^10.1.0",
-    "stylelint-order": "^3.0.0",
-    "stylelint-scss": "^3.8.0"
+    "stylelint-order": "^3.0.1",
+    "stylelint-scss": "^3.9.2"
   }
 }

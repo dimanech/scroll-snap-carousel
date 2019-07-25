@@ -6,18 +6,14 @@ export default class ScrollCarouselAutoplay extends SnapScrollCarousel {
 
 		this.autoPlayEnabled = this.carousel.hasAttribute('data-carousel-autoplay') || false;
 		this.autoPlayDelay = this.carousel.getAttribute('data-carousel-autoplay') || 5000;
-
-		this.initAutoplay();
 	}
 
-	initAutoplay() {
+	afterInit() {
 		this.addAutoPlayEventListeners();
 		this.startAutoPlay();
 	}
 
 	addAutoPlayEventListeners() {
-		super.addEventListeners();
-
 		this.startAutoPlay = this.startAutoPlay.bind(this);
 		this.stopAutoPlay = this.stopAutoPlay.bind(this);
 		this.disableAutoPlay = this.disableAutoPlay.bind(this);
@@ -66,8 +62,7 @@ export default class ScrollCarouselAutoplay extends SnapScrollCarousel {
 		this.carousel.removeEventListener('mouseleave', this.startAutoPlay);
 	}
 
-	//destroy() {
-	//	super.destroy(); // TODO
-	//	this.disableAutoPlay();
-	//}
+	afterDestroy() {
+		this.disableAutoPlay();
+	}
 }

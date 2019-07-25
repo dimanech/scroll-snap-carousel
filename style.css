@@ -2,6 +2,12 @@ body {
 	margin: 50px 100px;
 }
 
+@media screen and (max-width: 1024px) {
+	body {
+		margin: 20px;
+	}
+}
+
 :focus {
 	outline: 3px solid red;
 }
@@ -75,7 +81,7 @@ body {
 	background-color: #fff;
 	border-radius: 100%;
 	border: none;
-	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 	height: 40px;
 	margin-top: -20px;
 	position: absolute;
@@ -187,19 +193,19 @@ body {
 /* Vertical carousel */
 
 .scroll {
-	position: relative;
 	padding: 1px 10px;
+	position: relative;
 }
 
 .scroll::before,
 .scroll::after {
-	content: "";
-	position: absolute;
-	left: 50%;
-	width: 0;
-	height: 1px;
 	background-color: #666;
+	content: "";
+	left: 50%;
+	height: 1px;
+	position: absolute;
 	opacity: 0;
+	width: 0;
 	transition: ease 0.3s;
 	transition-property: width, left, opacity;
 	z-index: 1;

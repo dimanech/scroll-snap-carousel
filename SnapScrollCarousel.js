@@ -1,5 +1,4 @@
 export default class SnapScrollCarousel {
-	// carousel, track, frame, item
 	constructor(domNode) {
 		this.carousel = domNode;
 		this.carouselTrack = this.carousel.querySelector('[data-carousel-track]');
@@ -18,7 +17,10 @@ export default class SnapScrollCarousel {
 		this.updateCarouselState();
 		this.initPagination();
 		this.carousel.classList.add('_inited');
+		this.afterInit();
 	}
+
+	afterInit() {}
 
 	addEventListeners() {
 		this.onScroll = this.onScroll.bind(this);
@@ -43,9 +45,9 @@ export default class SnapScrollCarousel {
 			this.scrollEnd = totalScrollHeight + this.scrollEndSensitivity >= this.carouselTrack.scrollHeight;
 		}
 
-		if (!this.requested) {
+		if (!this.requestedCallInNextFrame) {
 			window.requestAnimationFrame(this.scrollHandlers.bind(this));
-			this.requested = true;
+			this.requestedCallInNextFrame = true;
 		}
 	}
 
@@ -55,7 +57,7 @@ export default class SnapScrollCarousel {
 			this.setActivePagination();
 			this.scrollActivePaginationIntoView();
 		}
-		this.requested = false;
+		this.requestedCallInNextFrame = false;
 	}
 
 	updateCarouselState() {
@@ -92,7 +94,7 @@ export default class SnapScrollCarousel {
 
 	prev() {
 		if (this.carouselDirection === 'horizontal') {
-			this.scrollToPoint(0,this.carouselTrack.scrollLeft - this.carouselTrack.clientWidth);
+			this.scrollToPoint(0, this.carouselTrack.scrollLeft - this.carouselTrack.clientWidth);
 		} else {
 			this.scrollToPoint(this.carouselTrack.scrollTop - this.carouselTrack.clientHeight, 0);
 		}
@@ -100,9 +102,9 @@ export default class SnapScrollCarousel {
 
 	scrollToPoint(top, left, node) {
 		let element = node || this.carouselTrack;
-		// Safari old + Edge do not have smooth scrolling
-		// please use polyfill or leave it as is
-		if (typeof element.scrollTo === 'function') {
+		// All Safari and Edge do not have smooth scrolling
+		// please use polyfill or just leave it as is
+		if (typeof element.scrollTo === 'function' && 'scrollBehavior' in document.documentElement.style) {
 			element.scrollTo({
 				top: top,
 				left: left,
@@ -110,7 +112,7 @@ export default class SnapScrollCarousel {
 			});
 		} else {
 			if (this.carouselDirection === 'horizontal') {
-				if (window.jQuery !== undefined) {
+				if (window.jQuery !== undefined) { // if we already have huge polifill =)
 					window.jQuery(element).animate({ scrollLeft: left}, 300);
 				} else {
 					element.scrollLeft = left;
@@ -217,8 +219,11 @@ export default class SnapScrollCarousel {
 			if (this.carousel.getAttribute('data-pagination') !== '') { // existed pagination
 				this.pagination.addEventListener('click', this.handlePaginationClick);
 			} else {
-				this.pagination.delete();
+				this.carousel.removeChild(this.pagination);
 			}
 		}
+		this.afterDestroy();
 	}
+
+	afterDestroy() {}
 }
