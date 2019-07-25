@@ -2,6 +2,10 @@ body {
 	margin: 50px 100px;
 }
 
+:focus {
+	outline: 3px solid red;
+}
+
 .carousel {
 	position: relative;
 }

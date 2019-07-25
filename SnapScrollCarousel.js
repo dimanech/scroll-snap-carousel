@@ -1,4 +1,5 @@
 export default class SnapScrollCarousel {
+	// carousel, track, frame, item
 	constructor(domNode) {
 		this.carousel = domNode;
 		this.carouselTrack = this.carousel.querySelector('[data-carousel-track]');
@@ -8,8 +9,6 @@ export default class SnapScrollCarousel {
 		this.carouselDirection = this.carousel.getAttribute('data-carousel') || 'horizontal';
 		this.currentPage = 0;
 
-		this.itemsContainerWidth = this.carouselTrack.offsetWidth;
-		this.itemsContainerHeight = this.carouselTrack.offsetHeight;
 		this.scrollEndSensitivity = 40; // Workaround IE rounding for clientWidth and scrollWidth
 	}
 
@@ -17,8 +16,8 @@ export default class SnapScrollCarousel {
 		this.addEventListeners();
 		this.onScroll();
 		this.updateCarouselState();
-		this.carousel.classList.add('_inited');
 		this.initPagination();
+		this.carousel.classList.add('_inited');
 	}
 
 	addEventListeners() {
@@ -26,32 +25,37 @@ export default class SnapScrollCarousel {
 		this.prev = this.prev.bind(this);
 		this.next = this.next.bind(this);
 
-		this.carouselTrack.addEventListener('scroll', this.onScroll);
-		this.carouselTrack.addEventListener('touchstart', this.onScroll);
+		this.carouselTrack.addEventListener('scroll', this.onScroll, { passive: true });
+		this.carouselTrack.addEventListener('touchstart', this.onScroll, { passive: true });
 		this.prevButton.addEventListener('click', this.prev);
 		this.nextButton.addEventListener('click', this.next);
 	}
 
 	onScroll() {
+		// TODO: optimize. Cache metric of slider and add window width change watcher
 		if (this.carouselDirection === 'horizontal') {
-			const totalScrollWidth = this.carouselTrack.scrollLeft + this.itemsContainerWidth;
+			const totalScrollWidth = this.carouselTrack.scrollLeft + this.carousel.offsetWidth;
 			this.scrollStart = this.carouselTrack.scrollLeft <= 0;
 			this.scrollEnd = totalScrollWidth + this.scrollEndSensitivity >= this.carouselTrack.scrollWidth;
 		} else {
-			const totalScrollHeight = this.carouselTrack.scrollTop + this.itemsContainerHeight;
+			const totalScrollHeight = this.carouselTrack.scrollTop + this.carousel.offsetHeight;
 			this.scrollStart = this.carouselTrack.scrollTop <= 0;
 			this.scrollEnd = totalScrollHeight + this.scrollEndSensitivity >= this.carouselTrack.scrollHeight;
 		}
 
-		window.requestAnimationFrame(this.scrollHandlers.bind(this));
+		if (!this.requested) {
+			window.requestAnimationFrame(this.scrollHandlers.bind(this));
+			this.requested = true;
+		}
 	}
 
 	scrollHandlers() {
 		this.updateCarouselState();
 		if (this.pagination) {
 			this.setActivePagination();
-			this.scrollToActivePagination(); // no need to scroll on init
+			this.scrollActivePaginationIntoView();
 		}
+		this.requested = false;
 	}
 
 	updateCarouselState() {
@@ -80,17 +84,17 @@ export default class SnapScrollCarousel {
 
 	next() {
 		if (this.carouselDirection === 'horizontal') {
-			this.scrollToPoint(0,this.carouselTrack.scrollLeft += this.carouselTrack.clientWidth);
+			this.scrollToPoint(0,this.carouselTrack.scrollLeft + this.carouselTrack.clientWidth);
 		} else {
-			this.scrollToPoint(this.carouselTrack.scrollTop += this.carouselTrack.clientHeight, 0);
+			this.scrollToPoint(this.carouselTrack.scrollTop + this.carouselTrack.clientHeight, 0);
 		}
 	}
 
 	prev() {
 		if (this.carouselDirection === 'horizontal') {
-			this.scrollToPoint(0,this.carouselTrack.scrollLeft -= this.carouselTrack.clientWidth);
+			this.scrollToPoint(0,this.carouselTrack.scrollLeft - this.carouselTrack.clientWidth);
 		} else {
-			this.scrollToPoint(this.carouselTrack.scrollTop -= this.carouselTrack.clientHeight, 0);
+			this.scrollToPoint(this.carouselTrack.scrollTop - this.carouselTrack.clientHeight, 0);
 		}
 	}
 
@@ -107,13 +111,13 @@ export default class SnapScrollCarousel {
 		} else {
 			if (this.carouselDirection === 'horizontal') {
 				if (window.jQuery !== undefined) {
-					$(element).animate({ scrollLeft: left}, 300);
+					window.jQuery(element).animate({ scrollLeft: left}, 300);
 				} else {
 					element.scrollLeft = left;
 				}
 			} else {
 				if (window.jQuery !== undefined) {
-					$(element).animate({ scrollTop: top }, 300);
+					window.jQuery(element).animate({ scrollTop: top }, 300);
 				} else {
 					element.scrollTop = top;
 				}
@@ -121,11 +125,13 @@ export default class SnapScrollCarousel {
 		}
 	}
 
+	// Pagination
+
 	initPagination() {
-		const paginationOption = this.carousel.getAttribute('data-pagination');
-		if (paginationOption === null) {
+		if (!this.carousel.hasAttribute('data-pagination')) {
 			return;
 		}
+		const paginationOption = this.carousel.getAttribute('data-pagination');
 		if (paginationOption === '') {
 			this.createPaginationElements();
 		} else {
@@ -136,14 +142,18 @@ export default class SnapScrollCarousel {
 	}
 
 	createPaginationElements() {
-		const fullScrollCount = Math.ceil(this.carouselTrack.scrollWidth / this.carousel.clientWidth);
-		if (this.pagination) {
+		const hasPagination = !!this.pagination;
+		// We need to use round, not ceil, since it called on scroll, in case of last it would generate falls positive
+		const numberOfPages = Math.round(this.carouselTrack.scrollWidth / this.carouselTrack.clientWidth);
+
+		if (!hasPagination) {
+			this.pagination = document.createElement('div');
+			this.pagination.className = 'pagination';
+		} else {
 			this.pagination.innerHTML = '';
 		}
-		this.pagination = document.createElement('div');
-		this.pagination.className = 'pagination';
 
-		for (let i = 0; i < fullScrollCount; i++) {
+		for (let i = 0; i < numberOfPages; i++) {
 			const page = document.createElement('button');
 			page.className = 'page';
 			page.setAttribute('data-page', i);
@@ -151,25 +161,36 @@ export default class SnapScrollCarousel {
 			this.pagination.appendChild(page);
 		}
 
-		this.carousel.appendChild(this.pagination);
+		if (!hasPagination) {
+			this.carousel.appendChild(this.pagination);
+		}
 	}
 
 	setActivePagination() {
-		const currentPageIndex = Math.ceil(this.carouselTrack.scrollLeft / this.carousel.clientWidth);
-		this.pagination.children[this.currentPage].classList.remove('_current');
-		const currentPage = this.pagination.children[currentPageIndex];
-		if (!currentPage) {
+		const currentPageIndex = Math.round(this.carouselTrack.scrollLeft / this.carousel.clientWidth);
+		const currentPageNode = this.pagination.children[currentPageIndex];
+		if (!currentPageNode) {
 			this.initPagination();
 		}
-		currentPage.classList.add('_current');
+
+		this.pagination.children[this.currentPage].classList.remove('_current');
+		currentPageNode.classList.add('_current');
+
 		this.currentPage = currentPageIndex;
 	}
 
-	scrollToActivePagination() {
-		const currentPage = this.pagination.children[this.currentPage];
-		if (currentPage.offsetTop > this.pagination.clientHeight ||
-			currentPage.getBoundingClientRect().top < 0) {
-			this.scrollToPoint(currentPage.offsetTop, 0, this.pagination);
+	scrollActivePaginationIntoView() {
+		if (this.pagination.scrollHeight === this.pagination.offsetHeight) {
+			return;
+		}
+
+		const currentPageNode = this.pagination.children[this.currentPage];
+
+		if (currentPageNode.offsetTop > this.pagination.clientHeight) {
+			this.scrollToPoint(this.pagination.scrollTop + this.pagination.clientHeight, 0, this.pagination);
+		}
+		if (currentPageNode.offsetTop < this.pagination.scrollTop) {
+			this.scrollToPoint(this.pagination.scrollTop - this.pagination.clientHeight, 0, this.pagination);
 		}
 	}
 
@@ -192,6 +213,12 @@ export default class SnapScrollCarousel {
 		this.carouselTrack.removeEventListener('touchstart', this.onScroll);
 		this.prevButton.removeEventListener('click', this.prev);
 		this.nextButton.removeEventListener('click', this.next);
-		this.pagination.delete();
+		if (this.pagination) {
+			if (this.carousel.getAttribute('data-pagination') !== '') { // existed pagination
+				this.pagination.addEventListener('click', this.handlePaginationClick);
+			} else {
+				this.pagination.delete();
+			}
+		}
 	}
 }

@@ -123,6 +123,20 @@
 		<button class="carousel__ctrl _next" data-next-button tabindex="-1" aria-hidden="true">Next</button>
 	</div>
 	
+	<h2>Slider like with autoplay</h2>
+	<div class="carousel _mandatory" data-carousel-autoplay="5000" data-pagination>
+		<button class="carousel__ctrl _prev" data-prev-button tabindex="-1" aria-hidden="true">Prev</button>
+		<div class="carousel__track" data-carousel-track>
+			<div class="box _single" tabindex="0">1</div>
+			<div class="box _single" tabindex="0">2</div>
+			<div class="box _single" tabindex="0">3</div>
+			<div class="box _single" tabindex="0">4</div>
+			<div class="box _single" tabindex="0">5</div>
+			<div class="box _single" tabindex="0">6</div>
+		</div>
+		<button class="carousel__ctrl _next" data-next-button tabindex="-1" aria-hidden="true">Next</button>
+	</div>
+	
 	<h2>Scroll by 3 or any other items</h2>
 	<div class="carousel _half-of-next _mandatory" data-carousel>
 		<button class="carousel__ctrl _prev" data-prev-button tabindex="-1" aria-hidden="true">Prev</button>
@@ -222,7 +236,9 @@
 	
 	<script type="module">
 		import SnapScrollCarousel from './SnapScrollCarousel.js';
+		import ScrollCarouselAutoplay from './ScrollCarouselAutoplay.js';
 		document.querySelectorAll('[data-carousel]').forEach(carousel => new SnapScrollCarousel(carousel).init());
+		document.querySelectorAll('[data-carousel-autoplay]').forEach(carousel => new ScrollCarouselAutoplay(carousel).init());
 	</script>
 </body>
 </html>
