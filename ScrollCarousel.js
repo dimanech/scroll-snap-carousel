@@ -23,7 +23,6 @@ export default class ScrollCarousel {
 		this.onScroll = this.onScroll.bind(this);
 		this.scrollToPrevPage = this.scrollToPrevPage.bind(this);
 		this.scrollToNextPage = this.scrollToNextPage.bind(this);
-		this.setTrackWidth = this.setTrackWidth.bind(this);
 
 		this.carouselTrack.addEventListener('scroll', this.onScroll, { passive: true });
 		this.carouselTrack.addEventListener('touchstart', this.onScroll, { passive: true });

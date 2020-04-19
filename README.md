@@ -20,12 +20,12 @@ It has been 3 years or so when this API available for browsers.
 
 ## Features
 
-* Progressive enhancement, it work even before JS is loaded
+* Progressive enhancement, basic funtionality available without JS
 * Responsive
 * LTR and RTL directions support
 * Plays well with dynamic content
 * AAA ARIA accessibility (focus of elements and visibility for AT)
-* Could be controlled from keyboard (limited - tab, arrows), mouse, touch etc. without any JS logic
+* Could be controlled from keyboard (tab, arrows), mouse, touch etc. without any JS logic (Chrome has bug with arrows navigation)
 * Scroll up to all elements, not just 1 at the time
 
 ### Infinite scrolling
