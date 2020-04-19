@@ -34,7 +34,7 @@ export default class ScrollCarouselAutoplay extends ScrollCarousel {
 			this.scrollToPoint(0, 0);
 			// adjust timeout delay to have constant pause
 		} else {
-			this.next();
+			this.scrollToNextPage();
 		}
 
 		this.startAutoPlay();

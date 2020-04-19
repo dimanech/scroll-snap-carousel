@@ -21,17 +21,28 @@ export default class ScrollCarousel {
 
 	addEventListeners() {
 		this.onScroll = this.onScroll.bind(this);
-		this.prev = this.prev.bind(this);
-		this.next = this.next.bind(this);
+		this.scrollToPrevPage = this.scrollToPrevPage.bind(this);
+		this.scrollToNextPage = this.scrollToNextPage.bind(this);
+		this.setTrackWidth = this.setTrackWidth.bind(this);
 
 		this.carouselTrack.addEventListener('scroll', this.onScroll, { passive: true });
 		this.carouselTrack.addEventListener('touchstart', this.onScroll, { passive: true });
-		this.prevButton.addEventListener('click', this.prev);
-		this.nextButton.addEventListener('click', this.next);
+		this.prevButton.addEventListener('click', this.scrollToPrevPage);
+		this.nextButton.addEventListener('click', this.scrollToNextPage);
+
+		this.addGrabEventListeners();
+	}
+
+	removeEventListeners() {
+		this.carouselTrack.removeEventListener('scroll', this.onScroll);
+		this.carouselTrack.removeEventListener('touchstart', this.onScroll);
+		this.prevButton.removeEventListener('click', this.scrollToPrevPage);
+		this.nextButton.removeEventListener('click', this.scrollToNextPage);
+
+		this.removeGrabEventListeners();
 	}
 
 	// Prev next buttons and UI
-
 	onScroll() {
 		this.updateCarouselMetric();
 
@@ -42,7 +53,7 @@ export default class ScrollCarousel {
 	}
 
 	updateCarouselMetric() {
-		// TODO: optimize. Cache metric of slider and add window width change watcher
+		// Possible optimization: Resize Observer that watch carousel width and cache this.carousel.offsetWidth
 		if (this.carouselDirection === 'horizontal') {
 			const totalScrollWidth = this.carouselTrack.scrollLeft + this.carousel.offsetWidth;
 			this.isScrollStart = this.carouselTrack.scrollLeft <= 0;
@@ -97,20 +108,23 @@ export default class ScrollCarousel {
 		return Math.round(currentPosition / pageWidth);
 	}
 
-	next() {
-		if (this.carouselDirection === 'horizontal') {
-			const curPage = this.getCurrentPageIndex() + 1;
-			this.scrollToPoint(0, curPage * this.carouselTrack.clientWidth);
-		} else {
-			this.scrollToPoint((this.getCurrentPageIndex() + 1) * this.carouselTrack.clientHeight, 0);
-		}
+	scrollToNextPage() {
+		this.scrollToPage(this.getCurrentPageIndex() + 1);
 	}
 
-	prev() {
+	scrollToPrevPage() {
+		this.scrollToPage(this.getCurrentPageIndex() - 1);
+	}
+
+	scrollToPage(pageIndex) {
+		if (!pageIndex) {
+			return;
+		}
+
 		if (this.carouselDirection === 'horizontal') {
-			this.scrollToPoint(0, (this.getCurrentPageIndex() - 1) * this.carouselTrack.clientWidth);
+			this.scrollToPoint(0, Math.round(this.carousel.clientWidth * pageIndex));
 		} else {
-			this.scrollToPoint((this.getCurrentPageIndex() - 1) * this.carouselTrack.clientHeight, 0);
+			this.scrollToPoint(Math.round(this.carousel.clientHeight * pageIndex), 0);
 		}
 	}
 
@@ -147,6 +161,16 @@ export default class ScrollCarousel {
 		}
 		this.pagination.onclick = this.handlePaginationClick.bind(this);
 		this.setActivePagination();
+	}
+
+	destroyPagination() {
+		if (this.pagination) {
+			this.pagination.onclick = null;
+
+			if (this.carousel.getAttribute('data-pagination') === '') { // existed pagination
+				this.carousel.removeChild(this.pagination);
+			}
+		}
 	}
 
 	createPaginationElements() {
@@ -206,31 +230,77 @@ export default class ScrollCarousel {
 
 	handlePaginationClick(event) {
 		event.preventDefault();
-		const eventTarget = event.target;
-		let pageIndex = eventTarget.getAttribute('data-page');
-		if (!pageIndex) {
+		const pageIndex = event.target.getAttribute('data-page');
+		this.scrollToPage(pageIndex);
+	}
+
+	// Grab to scroll functionality only for horizontal direction
+
+	addGrabEventListeners() {
+		if (this.carouselDirection !== 'horizontal') {
 			return;
 		}
-		if (this.carouselDirection === 'horizontal') {
-			this.scrollToPoint(0, Math.round(this.carousel.clientWidth * pageIndex));
-		} else {
-			this.scrollToPoint(Math.round(this.carousel.clientHeight * pageIndex), 0);
+
+		this.onTouchMove = this.onTouchMove.bind(this);
+		this.onTouchStart = this.onTouchStart.bind(this);
+		this.onTouchEnd = this.onTouchEnd.bind(this);
+
+		this.carouselTrack.addEventListener('mousedown', this.onTouchStart);
+		this.carouselTrack.addEventListener('mouseup', this.onTouchEnd);
+	}
+
+	removeGrabEventListeners() {
+		this.carouselTrack.removeEventListener('mousedown', this.onTouchStart);
+		this.carouselTrack.removeEventListener('mouseup', this.onTouchEnd);
+	}
+
+	onTouchStart(event) {
+		this.initialX = event.pageX || event.touches[0].pageX;
+		this.carouselWidth = this.carousel.clientWidth;
+		this.deltaX = 0;
+
+		this.carouselTrack.addEventListener('mousemove', this.onTouchMove);
+		this.carouselTrack.addEventListener('mouseleave', this.onTouchEnd);
+		this.carouselTrack.classList.add('_grabbing');
+
+		clearTimeout(this.grabbingRemoveTimeout);
+	}
+
+	onTouchMove(event) {
+		const x = event.touches !== undefined ? event.touches[0].pageX : event.clientX;
+		this.deltaX = (this.initialX - x) / this.carouselWidth * 100;
+
+		this.carouselTrack.scrollTo({
+			top: 0,
+			left: this.carouselTrack.scrollLeft + this.deltaX
+		});
+	}
+
+	onTouchEnd() {
+		this.carouselTrack.removeEventListener('mousemove', this.onTouchMove);
+		this.carouselTrack.removeEventListener('mouseleave', this.onTouchEnd);
+		// we should remove scroll-snap-type with delay, otherwise it cause bouncing
+		this.grabbingRemoveTimeout = setTimeout(() => this.carouselTrack.classList.remove('_grabbing'), 600);
+
+		switch (true) {
+			case (this.deltaX <= -10):
+				this.scrollToPrevPage();
+				break;
+			case (this.deltaX >= 10):
+				this.scrollToNextPage();
+				break;
+			default:
+				// remove immediate for this case
+				this.carouselTrack.classList.remove('_grabbing');
 		}
+
+		this.deltaX = 0;
 	}
 
 	// Destroy
 
 	destroy() {
-		this.carouselTrack.removeEventListener('scroll', this.onScroll);
-		this.carouselTrack.removeEventListener('touchstart', this.onScroll);
-		this.prevButton.removeEventListener('click', this.prev);
-		this.nextButton.removeEventListener('click', this.next);
-		// pagination
-		this.pagination.onclick = null;
-		if (this.pagination) {
-			if (this.carousel.getAttribute('data-pagination') === '') { // existed pagination
-				this.carousel.removeChild(this.pagination);
-			}
-		}
+		this.removeEventListeners();
+		this.destroyPagination();
 	}
 }
