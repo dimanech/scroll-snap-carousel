@@ -22,13 +22,14 @@ body {
 	display: flex;
 	overflow-behavior: contain;
 	overflow-scrolling: touch;
-	overscroll-behavior-x: contain;
+	overscroll-behavior-x: none; /* contain */
 	overflow: hidden;
 	overflow-x: auto;
 	scroll-behavior: smooth;
-	scroll-snap-type: x proximity;
+	-webkit-scroll-snap-type: x mandatory;
+	-ms-scroll-snap-type: x mandatory;
+	scroll-snap-type: x mandatory;
 	scrollbar-width: none; /* FF */
-	touch-action: pan-x;
 	-ms-overflow-style: none; /* IE */
 	-ms-scroll-chaining: none;
 	-webkit-overflow-scrolling: touch;
@@ -36,6 +37,25 @@ body {
 
 .carousel__track::-webkit-scrollbar {
 	display: none;
+}
+
+.carousel__track._grabbing {
+	scroll-behavior: auto;
+	scroll-snap-type: none;
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	cursor: grab;
+	user-select: none;
+}
+
+.carousel__track._grabbing::before {
+	content: "";
+	display: block;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
 }
 
 .carousel._mandatory .carousel__track {
@@ -230,7 +250,6 @@ body {
 	scroll-behavior: smooth;
 	scroll-snap-type: y proximity;
 	scrollbar-width: none; /* FF */
-	touch-action: pan-y;
 	-ms-overflow-style: none; /* IE */
 	-ms-scroll-chaining: none;
 	-webkit-overflow-scrolling: touch;

@@ -1,14 +1,15 @@
-import SnapScrollCarousel from './SnapScrollCarousel.js';
+import ScrollCarousel from './ScrollCarousel.js';
 
-export default class ScrollCarouselAutoplay extends SnapScrollCarousel {
+export default class ScrollCarouselAutoplay extends ScrollCarousel {
 	constructor(domNode) {
 		super(domNode);
 
-		this.autoPlayEnabled = this.carousel.hasAttribute('data-carousel-autoplay') || false;
-		this.autoPlayDelay = this.carousel.getAttribute('data-carousel-autoplay') || 5000;
+		this.autoPlayEnabled = this.carousel.hasAttribute('data-autoplay') || false;
+		this.autoPlayDelay = this.carousel.getAttribute('data-autoplay') || 5000;
 	}
 
-	afterInit() {
+	init() {
+		super.init();
 		this.addAutoPlayEventListeners();
 		this.startAutoPlay();
 	}
@@ -29,7 +30,7 @@ export default class ScrollCarouselAutoplay extends SnapScrollCarousel {
 	cycle() {
 		this.stopAutoPlay();
 
-		if (this.scrollEnd) {
+		if (this.isScrollEnd) {
 			this.scrollToPoint(0, 0);
 			// adjust timeout delay to have constant pause
 		} else {
@@ -62,7 +63,8 @@ export default class ScrollCarouselAutoplay extends SnapScrollCarousel {
 		this.carousel.removeEventListener('mouseleave', this.startAutoPlay);
 	}
 
-	afterDestroy() {
+	destroy() {
+		super.destroy();
 		this.disableAutoPlay();
 	}
 }
