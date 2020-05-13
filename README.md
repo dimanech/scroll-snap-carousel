@@ -1,17 +1,15 @@
 # Snap scroll carousel
 
-"Classical" carousels huge libraries could be easily replaced by native scroll functionality
- - that would contribute to grater UX, better performance and progressive enhancement practice.
+"Classical" carousels huge libraries could be easily replaced by native scroll functionality. This would contribute to grater UX, better performance and progressive enhancement approach.
 
 You probably know that scroll is very complex functionality that very hard to implement without access to native OS API. 
 That's why native scroll is more comfortable for the user (on modern desktop and mobile) than any point-and-click functionality.
 
 ## CSS snap points
 
-But in classical "carousels", you are expected some snapping of scrolling. 
-And it could be done with CSS. 
+Carousel in most cases could be substituted with horizontal scroll view, but in classical "carousels", you are expected some snapping of scrolling.
 
-It has been 3 years or so when this API available for browsers. 
+And it has been 3 years or so when this API available for browsers. 
 
 * [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-type)
 * [W3C v1](https://www.w3.org/TR/2015/WD-css-snappoints-1-20150326/)
@@ -20,20 +18,16 @@ It has been 3 years or so when this API available for browsers.
 
 ## Features
 
-* Progressive enhancement, basic funtionality available without JS
+* Progressive enhancement, basic functionality available without JS
 * Responsive
 * LTR and RTL directions support
-* Plays well with dynamic content
 * AAA ARIA accessibility (focus of elements and visibility for AT)
 * Could be controlled from keyboard (tab, arrows), mouse, touch etc. without any JS logic (Chrome has bug with arrows navigation)
 * Scroll up to all elements, not just 1 at the time
 
 ### Infinite scrolling
 
-It is hard to explain why this marquee-like pattern even needed in carousels.
-
-Since carousels mostly represents large lists user should have feels of extremes of the list.
-For that type of content more important good browsing UX than "auto scrolling".
+Could be implemented but would be performance fall. Since it based on scroll we have boundaries of the list.
 
 ## Browser compatibility
 

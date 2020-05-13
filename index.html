@@ -6,15 +6,18 @@
 		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
 	>
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Snap scroll</title>
+	<title>Snap scroll carousel</title>
 	<link rel="stylesheet" href="css/carousels.css"/>
+	<!-- <script async type="module" src="../../initiator.js"></script>-->
 </head>
 <body>
 	<h1>Snap scroll carousel</h1>
 	<h2>3 items</h2>
-	<div class="carousel"
+	<div
+		class="carousel"
 		data-component="./carousels/ScrollCarousel"
-		data-pagination>
+		data-pagination
+	>
 		<button
 			class="carousel__ctrl _prev"
 			data-elem-prev-button
@@ -284,10 +287,13 @@
 	</div>
 
 	<h2>Vertical carousel + another carousel as thumbs</h2>
-	<div class="gallery">
+	<div
+		class="gallery"
+		data-component="./carousels/ScrollGallery"
+	>
 		<div
 			class="scroll"
-			data-component="./carousels/ScrollCarousel"
+			data-elem-thumbs
 			data-direction="vertical"
 		>
 			<button data-elem-prev-button style="display: none">
@@ -299,26 +305,24 @@
 			<div
 				class="scroll__track"
 				data-elem-carousel-track
-				id="gallery-thumbs"
 			>
-				<div class="thumb" data-page="0">1</div>
-				<div class="thumb" data-page="1">2</div>
-				<div class="thumb" data-page="2">3</div>
-				<div class="thumb" data-page="3">4</div>
-				<div class="thumb" data-page="4">5</div>
-				<div class="thumb" data-page="5">6</div>
-				<div class="thumb" data-page="6">7</div>
-				<div class="thumb" data-page="7">8</div>
-				<div class="thumb" data-page="8">9</div>
-				<div class="thumb" data-page="9">10</div>
-				<div class="thumb" data-page="10">11</div>
-				<div class="thumb" data-page="11">12</div>
+				<div class="thumb" data-elem-thumb data-page="0">1</div>
+				<div class="thumb" data-elem-thumb data-page="1">2</div>
+				<div class="thumb" data-elem-thumb data-page="2">3</div>
+				<div class="thumb" data-elem-thumb data-page="3">4</div>
+				<div class="thumb" data-elem-thumb data-page="4">5</div>
+				<div class="thumb" data-elem-thumb data-page="5">6</div>
+				<div class="thumb" data-elem-thumb data-page="6">7</div>
+				<div class="thumb" data-elem-thumb data-page="7">8</div>
+				<div class="thumb" data-elem-thumb data-page="8">9</div>
+				<div class="thumb" data-elem-thumb data-page="9">10</div>
+				<div class="thumb" data-elem-thumb data-page="10">11</div>
+				<div class="thumb" data-elem-thumb data-page="11">12</div>
 			</div>
 		</div>
 		<div
 			class="carousel _slider _mandatory"
-			data-component="./carousels/ScrollCarousel"
-			data-pagination="gallery-thumbs"
+			data-elem-slider
 		>
 			<button
 				class="carousel__ctrl _prev"
@@ -382,12 +386,15 @@
 	<br>
 	<br>
 	<br>
-	<script type="module">
-		import SnapScrollCarousel from './ScrollCarousel.js';
-		import ScrollCarouselAutoplay from './ScrollCarouselAutoplay.js';
 
-		document.querySelectorAll('[data-component="./carousels/ScrollCarousel"]').forEach(carousel => new SnapScrollCarousel(carousel).init());
+	<script type="module">
+		import ScrollCarousel from './ScrollCarouselGrab.js';
+		import ScrollCarouselAutoplay from './ScrollCarouselAutoplay.js';
+		import ScrollGallery from './ScrollGallery.js';
+
+		document.querySelectorAll('[data-component="./carousels/ScrollCarousel"]').forEach(carousel => new ScrollCarousel(carousel).init());
 		document.querySelectorAll('[data-component="./carousels/ScrollCarouselAutoplay"]').forEach(carousel => new ScrollCarouselAutoplay(carousel).init());
+		document.querySelectorAll('[data-component="./carousels/ScrollGallery"]').forEach(carousel => new ScrollGallery(carousel).init());
 	</script>
 </body>
 </html>

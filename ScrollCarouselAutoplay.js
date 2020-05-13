@@ -1,11 +1,11 @@
-import ScrollCarousel from './ScrollCarousel.js';
+import ScrollCarousel from './ScrollCarouselGrab.js';
 
 export default class ScrollCarouselAutoplay extends ScrollCarousel {
 	constructor(domNode) {
 		super(domNode);
 
 		this.autoPlayEnabled = this.carousel.hasAttribute('data-autoplay') || false;
-		this.autoPlayDelay = this.carousel.getAttribute('data-autoplay') || 5000;
+		this.autoPlayDelay = this.autoPlayEnabled ? this.carousel.getAttribute('data-autoplay') : 3000;
 	}
 
 	init() {

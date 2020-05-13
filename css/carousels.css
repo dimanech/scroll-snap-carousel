@@ -8,54 +8,67 @@ body {
 	}
 }
 
-:focus {
-	outline: 3px solid red;
+:focus,
+button:focus {
+	box-shadow: 0 0 0 1px hsl(195, 100%, 50%), 0 0 0 4px hsl(195, 53%, 79%);
 }
+
+button::-moz-focus-inner {
+	border: none;
+	padding: 0;
+}
+
+button:-moz-focusring {
+	outline: none !important;
+}
+
+/* Carousels */
 
 .carousel {
 	position: relative;
 }
 
-.carousel._inited {}
+.carousel._initialized {}
 
 .carousel__track {
 	display: flex;
-	overflow-behavior: contain;
-	overflow-scrolling: touch;
-	overscroll-behavior-x: none; /* contain */
 	overflow: hidden;
-	overflow-x: auto;
-	scroll-behavior: smooth;
-	-webkit-scroll-snap-type: x mandatory;
-	-ms-scroll-snap-type: x mandatory;
-	scroll-snap-type: x mandatory;
-	scrollbar-width: none; /* FF */
-	-ms-overflow-style: none; /* IE */
-	-ms-scroll-chaining: none;
+	overflow-behavior: contain;
 	-webkit-overflow-scrolling: touch;
+	overflow-scrolling: touch;
+	-ms-overflow-style: none; /* IE */
+	overflow-x: auto;
+	overscroll-behavior-x: none; /* contain */
+	scroll-behavior: smooth;
+	-ms-scroll-chaining: none;
+	/*-ms-scroll-snap-type: x mandatory;*/
+	/*-webkit-scroll-snap-type: x mandatory;*/
+	scroll-snap-type: x proximity;
+	scrollbar-width: none; /* FF */
 }
 
 .carousel__track::-webkit-scrollbar {
 	display: none;
 }
 
+.scroll__track._grabbing,
 .carousel__track._grabbing {
-	scroll-behavior: auto;
-	scroll-snap-type: none;
 	cursor: -moz-grab;
 	cursor: -webkit-grab;
 	cursor: grab;
 	user-select: none;
 }
 
+.scroll__track._grabbing::before,
 .carousel__track._grabbing::before {
+	bottom: 0;
 	content: "";
 	display: block;
-	position: absolute;
 	left: 0;
+	position: absolute;
 	right: 0;
 	top: 0;
-	bottom: 0;
+	z-index: 999;
 }
 
 .carousel._mandatory .carousel__track {
@@ -74,8 +87,8 @@ body {
 	opacity: 0;
 	position: absolute;
 	top: 0;
-	transition-property: visibility, opacity;
 	transition: ease 0.2s;
+	transition-property: visibility, opacity;
 	visibility: hidden;
 	width: 20px;
 	z-index: 1;
@@ -91,16 +104,16 @@ body {
 	right: 0;
 }
 
-.carousel._inited._next-visible::after,
-.carousel._inited._prev-visible::before {
+.carousel._initialized._next-visible::after,
+.carousel._initialized._prev-visible::before {
 	opacity: 1;
 	visibility: visible;
 }
 
 .carousel__ctrl {
 	background-color: #fff;
-	border-radius: 100%;
 	border: none;
+	border-radius: 100%;
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 	height: 40px;
 	margin-top: -20px;
@@ -132,9 +145,10 @@ body {
 }
 
 .page {
+	display: inline-block;
 	background-color: lightgrey;
-	border-radius: 10px;
 	border: none;
+	border-radius: 10px;
 	cursor: pointer;
 	height: 6px;
 	margin: 3px;
@@ -191,23 +205,35 @@ body {
 }
 
 .box:nth-child(2) {
-	background: #a13647;
+	background: #8bc34a;
 }
 
 .box:nth-child(3) {
-	background: #256e5e;
+	background: #cddc39;
 }
 
 .box:nth-child(4) {
-	background: #aa6639;
+	background: #ffeb3b;
 }
 
 .box:nth-child(5) {
-	background: #4b9131;
+	background: #ffc107;
 }
 
 .box:nth-child(6) {
-	background: #a13647;
+	background: #ff9800;
+}
+
+.box:nth-child(7) {
+	background: #c8bafe;
+}
+
+.box:nth-child(8) {
+	background: #9980ff;
+}
+
+.box:nth-child(9) {
+	background: #7b5cfd;
 }
 
 /* Vertical carousel */
@@ -221,38 +247,39 @@ body {
 .scroll::after {
 	background-color: #666;
 	content: "";
-	left: 50%;
 	height: 1px;
-	position: absolute;
+	left: 50%;
 	opacity: 0;
-	width: 0;
+	position: absolute;
 	transition: ease 0.3s;
 	transition-property: width, left, opacity;
+	width: 0;
 	z-index: 1;
 }
 
-.scroll._inited._prev-visible::before,
-.scroll._inited._next-visible::after {
-	width: 100%;
-	opacity: 1;
+.scroll._initialized._prev-visible::before,
+.scroll._initialized._next-visible::after {
 	left: 0;
+	opacity: 1;
+	width: 100%;
 }
 
+/* This is the heart of the carousel */
 .scroll__track {
 	display: flex;
 	flex-direction: column;
 	height: 400px;
-	overflow-behavior: contain;
-	overflow-scrolling: touch;
-	overscroll-behavior-y: contain;
 	overflow: hidden;
+	overflow-behavior: contain;
+	-webkit-overflow-scrolling: touch;
+	overflow-scrolling: touch;
+	-ms-overflow-style: none; /* IE */
 	overflow-y: auto;
+	overscroll-behavior-y: contain;
 	scroll-behavior: smooth;
+	-ms-scroll-chaining: none;
 	scroll-snap-type: y proximity;
 	scrollbar-width: none; /* FF */
-	-ms-overflow-style: none; /* IE */
-	-ms-scroll-chaining: none;
-	-webkit-overflow-scrolling: touch;
 }
 
 .scroll__track::-webkit-scrollbar {
@@ -273,8 +300,8 @@ body {
 }
 
 .thumb::after {
-	box-shadow: inset 0 0 0 0 lightblue;
 	bottom: 0;
+	box-shadow: inset 0 0 0 0 lightblue;
 	content: "";
 	left: 0;
 	position: absolute;
@@ -299,6 +326,6 @@ body {
 }
 
 .gallery .carousel {
-	width: 100%;
 	max-width: 400px;
+	width: 100%;
 }
